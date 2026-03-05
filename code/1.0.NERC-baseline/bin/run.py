@@ -15,7 +15,7 @@ gold.extract_NER(os.path.join(paths.RESOURCES,"drugs-train.txt"))
 print("Creating prefix-tree index with all known drug names")
 idx = DrugIndex(resources=paths.RESOURCES)    
 idxfile = os.path.join(paths.RESOURCES,"drug-index.json")
-with open(idxfile,"w") as jf: idx.dump(file=jf)
+with open(idxfile,"w", encoding="utf-8") as jf: idx.dump(file=jf)
 
 print("Applying index to predict drugs")
 os.makedirs(paths.RESULTS, exist_ok=True)

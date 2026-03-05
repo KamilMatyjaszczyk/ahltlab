@@ -7,13 +7,13 @@ class DrugIndex() :
     def __init__(self, filename=None, resources=None) :
         
         if filename is not None:
-            with open(filename) as f :
+            with open(filename, "r", encoding="utf-8") as f :
                 self.tree = json.load(f)
 
         elif resources is not None :
             self.tree = {}
             print("Collecting drugs from HSDB")
-            with open(os.path.join(resources,"HSDB.txt")) as h :
+            with open(os.path.join(resources, "HSDB.txt"), encoding="utf-8", errors="replace") as h :
                 n = 0
                 for x in h.readlines() :
                     tks = x.strip().lower().split()
@@ -22,14 +22,14 @@ class DrugIndex() :
                     if n%11==0 : print(f"{n} lines processed.        \r", end="")
 
             print("Collecting drugs from DrugBank")
-            with open(os.path.join(resources,"DrugBank.txt")) as h :
+            with open(os.path.join(resources, "DrugBank.txt"), encoding="utf-8", errors="replace") as h :
                 for x in h.readlines() :
                     (n,t) = x.strip().lower().split("|")
                     tks = n.split()
                     self.add_drug(self.tree, tks, t)
 
             print("Collecting drugs from drugs-train")
-            with open(os.path.join(resources,"drugs-train.txt")) as h :
+            with open(os.path.join(resources, "drugs-train.txt"), encoding="utf-8", errors="replace") as h :
                 for x in h.readlines() :
                     (_,_,n,t) = x.strip().lower().split("|")
                     tks = n.split()
@@ -82,7 +82,7 @@ if __name__ == "__main__" :
     # create a new index and dump it to file
     import paths
     drugs = DrugIndex(resources=paths.RESOURCES)
-    with open(outfile, "w") as of:
+    with open(outfile, "w", encoding="utf-8") as of:
        drugs.dump(file=of)
       
       
