@@ -1,0 +1,22 @@
+CRF:
+***** Iteration #521 *****
+Loss: 3413.237032
+Feature norm: 35.496156
+Error norm: 4.120358
+Active features: 21649
+Line search trials: 2
+Line search step: 0.500000
+Seconds required for this iteration: 0.357
+
+L-BFGS terminated with the stopping criteria
+Total seconds required for training: 98.814
+
+Storing the model
+Number of active features: 21649 (79556)
+Number of active attributes: 13755 (67369)
+Number of active labels: 9 (9)
+Writing labels
+Writing attributes
+Writing feature references for transitions
+Writing feature references for attributes
+Seconds required: 0.042
