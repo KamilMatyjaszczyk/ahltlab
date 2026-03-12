@@ -1,0 +1,20 @@
+Train Epoch 0: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.077463
+Validation set: Avg. loss: 0.0359, Accuracy: 219727/221550 (99.18%)
+Train Epoch 1: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.021270
+Validation set: Avg. loss: 0.0285, Accuracy: 220259/221550 (99.42%)
+Train Epoch 2: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.010840
+Validation set: Avg. loss: 0.0271, Accuracy: 220456/221550 (99.51%)
+Train Epoch 3: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.005253
+Validation set: Avg. loss: 0.0272, Accuracy: 220571/221550 (99.56%)
+Train Epoch 4: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.002940
+Validation set: Avg. loss: 0.0367, Accuracy: 220427/221550 (99.49%)
+Train Epoch 5: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.001955
+Validation set: Avg. loss: 0.0322, Accuracy: 220612/221550 (99.58%)
+Train Epoch 6: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.001534
+Validation set: Avg. loss: 0.0393, Accuracy: 220594/221550 (99.57%)
+Train Epoch 7: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.001202
+Validation set: Avg. loss: 0.0433, Accuracy: 220586/221550 (99.56%)
+Train Epoch 8: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.000926
+Validation set: Avg. loss: 0.0500, Accuracy: 220527/221550 (99.54%)
+Train Epoch 9: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.000740
+Validation set: Avg. loss: 0.0748, Accuracy: 220358/221550 (99.46%)

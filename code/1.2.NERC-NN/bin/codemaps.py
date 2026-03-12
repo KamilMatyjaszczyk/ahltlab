@@ -67,8 +67,8 @@ class Codemaps :
     # create indexes to encode them as numbers when needed
     def __create_indexs(self, data, maxlen, suflen) :
 
-        self.maxlen = maxlen
-        self.suflen = suflen
+        self.maxlen = int(maxlen)
+        self.suflen = int(suflen)
         words = set([])
         lc_words = set([])
         sufs = set([])

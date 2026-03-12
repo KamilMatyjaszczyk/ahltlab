@@ -135,9 +135,13 @@ if __name__ == "__main__" :
     modelname = sys.argv[3]
 
     params={}
-    for p in sys.argv[4:] :
-       k,v = p.split("=")
-       params[k]=int(v)
+for p in sys.argv[1:]:
+    if "=" in p:
+        par,val = p.split("=")
+        if par in {"batch_size","max_len","suf_len","epochs"}:
+            params[par] = int(val)
+        else:
+            params[par] = val
        
     do_train(trainfile, validationfile, params, modelname)
 

@@ -48,7 +48,10 @@ params = {}
 for p in sys.argv[1:]:
     if "=" in p:
         par,val = p.split("=")
-        params[par] = val
+        if par in {"batch_size","max_len","suf_len","epochs"}:
+            params[par] = int(val)
+        else:
+            params[par] = val
         
 if "name" not in params: params["name"]="mymodel_000"
 
