@@ -24,7 +24,7 @@ used_device = "cuda:0" if torch.cuda.is_available() else "cpu"
 
 #----------------------------------------------
 def train(network, epoch, train_loader):
-   optimizer = optim.Adam(network.parameters())
+   optimizer = optim.Adam(network.parameters(), lr=0.0005)
    network.to(torch.device(used_device))
 
    network.train()
@@ -83,7 +83,7 @@ def encode_dataset(ds, codes, params) :
       X = [x.to(torch.device(used_device)) for x in X]
       y = y.to(torch.device(used_device))
    return DataLoader(TensorDataset(*X, y), 
-                     batch_size=params['batch_size'])
+                     batch_size=params['batch_size'], shuffle=True)
 
 
 #----------------------------------------------
@@ -135,14 +135,14 @@ if __name__ == "__main__" :
     modelname = sys.argv[3]
 
     params={}
-for p in sys.argv[1:]:
-    if "=" in p:
-        par,val = p.split("=")
-        if par in {"batch_size","max_len","suf_len","epochs"}:
-            params[par] = int(val)
-        else:
-            params[par] = val
-       
-    do_train(trainfile, validationfile, params, modelname)
+    for p in sys.argv[1:]:
+        if "=" in p:
+            par,val = p.split("=")
+            if par in {"batch_size","max_len","suf_len","epochs"}:
+                params[par] = int(val)
+            else:
+                params[par] = val
+        
+        do_train(trainfile, validationfile, params, modelname)
 
 
