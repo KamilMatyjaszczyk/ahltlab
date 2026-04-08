@@ -24,7 +24,7 @@ used_device = "cuda:0" if torch.cuda.is_available() else "cpu"
 
 #----------------------------------------------
 def train(network, epoch, train_loader):
-   optimizer = optim.Adam(network.parameters(), lr=0.0005)
+   optimizer = optim.AdamW(network.parameters(), lr=0.001, weight_decay=1e-5)
    network.to(torch.device(used_device))
 
    network.train()
@@ -140,6 +140,8 @@ if __name__ == "__main__" :
             par,val = p.split("=")
             if par in {"batch_size","max_len","suf_len","epochs"}:
                 params[par] = int(val)
+            elif par in {"suf_lens", "pref_lens"}:
+                params[par] = [int(x) for x in val.split(",") if x !=""]
             else:
                 params[par] = val
         

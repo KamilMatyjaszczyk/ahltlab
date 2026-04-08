@@ -18,3 +18,211 @@ Train Epoch 8: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.000926
 Validation set: Avg. loss: 0.0500, Accuracy: 220527/221550 (99.54%)
 Train Epoch 9: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.000740
 Validation set: Avg. loss: 0.0748, Accuracy: 220358/221550 (99.46%)
+
+
+model 001 py -3.12 run.py train name=mymodel_001 batch_size=8 max_len=150 suf_len=4 epochs=10 //// Dropout 0.2 A- learning rate 0.005
+Train Epoch 0: batch:668/668 sentence:5343/5343 [100.00%] Loss:0.029207
+Validation set: Avg. loss: 0.0265, Accuracy: 220385/221550 (99.47%)
+Train Epoch 1: batch:668/668 sentence:5343/5343 [100.00%] Loss:0.009744
+Validation set: Avg. loss: 0.0565, Accuracy: 220188/221550 (99.39%)
+Train Epoch 2: batch:668/668 sentence:5343/5343 [100.00%] Loss:0.006220
+Validation set: Avg. loss: 0.0442, Accuracy: 220224/221550 (99.40%)
+Train Epoch 3: batch:668/668 sentence:5343/5343 [100.00%] Loss:0.004938
+Validation set: Avg. loss: 0.0585, Accuracy: 220332/221550 (99.45%)
+Train Epoch 4: batch:668/668 sentence:5343/5343 [100.00%] Loss:0.003994
+Validation set: Avg. loss: 0.0686, Accuracy: 220299/221550 (99.44%)
+Train Epoch 5: batch:668/668 sentence:5343/5343 [100.00%] Loss:0.003869
+Validation set: Avg. loss: 0.0582, Accuracy: 220328/221550 (99.45%)
+Train Epoch 6: batch:668/668 sentence:5343/5343 [100.00%] Loss:0.003555
+Validation set: Avg. loss: 0.0748, Accuracy: 220307/221550 (99.44%)
+Train Epoch 7: batch:668/668 sentence:5343/5343 [100.00%] Loss:0.003125
+Validation set: Avg. loss: 0.0800, Accuracy: 220301/221550 (99.44%)
+Train Epoch 8: batch:668/668 sentence:5343/5343 [100.00%] Loss:0.003270
+Validation set: Avg. loss: 0.0904, Accuracy: 220258/221550 (99.42%)
+Train Epoch 9: batch:668/668 sentence:5343/5343 [100.00%] Loss:0.002963
+Validation set: Avg. loss: 0.1070, Accuracy: 220210/221550 (99.40%)
+
+model 002 py -3.12 run.py train name=mymodel_002 batch_size=8 max_len=200 suf_len=6 epochs=10
+=================================================================
+Train Epoch 0: batch:668/668 sentence:5343/5343 [100.00%] Loss:0.024064
+Validation set: Avg. loss: 0.0171, Accuracy: 294231/295400 (99.60%)
+Train Epoch 1: batch:668/668 sentence:5343/5343 [100.00%] Loss:0.007711
+Validation set: Avg. loss: 0.0212, Accuracy: 294211/295400 (99.60%)
+Train Epoch 2: batch:668/668 sentence:5343/5343 [100.00%] Loss:0.004742
+Validation set: Avg. loss: 0.0334, Accuracy: 294030/295400 (99.54%)
+Train Epoch 3: batch:668/668 sentence:5343/5343 [100.00%] Loss:0.003723
+Validation set: Avg. loss: 0.0467, Accuracy: 293986/295400 (99.52%)
+Train Epoch 4: batch:668/668 sentence:5343/5343 [100.00%] Loss:0.003064
+Validation set: Avg. loss: 0.0517, Accuracy: 293915/295400 (99.50%)
+Train Epoch 5: batch:668/668 sentence:5343/5343 [100.00%] Loss:0.002627
+Validation set: Avg. loss: 0.0400, Accuracy: 294091/295400 (99.56%)
+Train Epoch 6: batch:668/668 sentence:5343/5343 [100.00%] Loss:0.002567
+Validation set: Avg. loss: 0.0625, Accuracy: 294125/295400 (99.57%)
+Train Epoch 7: batch:668/668 sentence:5343/5343 [100.00%] Loss:0.002258
+Validation set: Avg. loss: 0.0702, Accuracy: 294064/295400 (99.55%)
+Train Epoch 8: batch:668/668 sentence:5343/5343 [100.00%] Loss:0.002374
+Validation set: Avg. loss: 0.0488, Accuracy: 294093/295400 (99.56%)
+Train Epoch 9: batch:668/668 sentence:5343/5343 [100.00%] Loss:0.002195
+Validation set: Avg. loss: 0.0554, Accuracy: 294145/295400 (99.58%)
+
+model 3 py -3.12 run.py train name=mymodel_003 batch_size=16 max_len=150 suf_len=5 epochs=5  // learning rate 0.001
+Train Epoch 0: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.038435
+Validation set: Avg. loss: 0.0230, Accuracy: 220401/221550 (99.48%)
+Train Epoch 1: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.009658
+Validation set: Avg. loss: 0.0227, Accuracy: 220442/221550 (99.50%)
+Train Epoch 2: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.005750
+Validation set: Avg. loss: 0.0324, Accuracy: 220383/221550 (99.47%)
+Train Epoch 3: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.004193
+Validation set: Avg. loss: 0.0451, Accuracy: 220371/221550 (99.47%)
+Train Epoch 4: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.003421
+Validation set: Avg. loss: 0.0596, Accuracy: 220307/221550 (99.44%)
+
+model 4 py -3.12 run.py train name=mymodel_003 batch_size=16 max_len=150 suf_len=5 epochs=5  // learning rate 0.0005 dropout 0.1
+=================================================================
+Train Epoch 0: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.101280
+Validation set: Avg. loss: 0.0421, Accuracy: 218945/221550 (98.82%)
+Train Epoch 1: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.022712
+Validation set: Avg. loss: 0.0262, Accuracy: 220235/221550 (99.41%)
+Train Epoch 2: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.010495
+Validation set: Avg. loss: 0.0263, Accuracy: 220344/221550 (99.46%)
+Train Epoch 3: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.005523
+Validation set: Avg. loss: 0.0342, Accuracy: 220403/221550 (99.48%)
+Train Epoch 4: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.003132
+Validation set: Avg. loss: 0.0313, Accuracy: 220521/221550 (99.54%)
+
+model 7 bigger hidden size 256-> more complexity no better model, jump over go to features
+Train Epoch 0: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.089855
+Validation set: Avg. loss: 0.0377, Accuracy: 219301/221550 (98.98%)
+Train Epoch 1: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.021199
+Validation set: Avg. loss: 0.0243, Accuracy: 220201/221550 (99.39%)
+Train Epoch 2: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.009287
+Validation set: Avg. loss: 0.0251, Accuracy: 220306/221550 (99.44%)
+Train Epoch 3: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.004705
+Validation set: Avg. loss: 0.0403, Accuracy: 220206/221550 (99.39%)
+Train Epoch 4: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.002595
+Validation set: Avg. loss: 0.0455, Accuracy: 220225/221550 (99.40%)
+
+model 8 Take out handmade features, hidden size still at 256
+Train Epoch 0: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.097562
+Validation set: Avg. loss: 0.0460, Accuracy: 218443/221550 (98.60%)
+Train Epoch 1: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.029386
+Validation set: Avg. loss: 0.0351, Accuracy: 219715/221550 (99.17%)
+Train Epoch 2: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.013785
+Validation set: Avg. loss: 0.0411, Accuracy: 219830/221550 (99.22%)
+Train Epoch 3: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.007147
+Validation set: Avg. loss: 0.0483, Accuracy: 219897/221550 (99.25%)
+Train Epoch 4: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.003860
+Validation set: Avg. loss: 0.0552, Accuracy: 219988/221550 (99.29%)
+
+model 9 orthogonal handmade features, hidden size down to 200
+Train Epoch 0: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.103460
+Validation set: Avg. loss: 0.0531, Accuracy: 218248/221550 (98.51%)
+Train Epoch 1: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.031948
+Validation set: Avg. loss: 0.0364, Accuracy: 219646/221550 (99.14%)
+Train Epoch 2: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.015472
+Validation set: Avg. loss: 0.0422, Accuracy: 219898/221550 (99.25%)
+Train Epoch 3: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.008544
+Validation set: Avg. loss: 0.0464, Accuracy: 219942/221550 (99.27%)
+Train Epoch 4: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.004823
+Validation set: Avg. loss: 0.0489, Accuracy: 219990/221550 (99.30%)
+
+model 10 lexicon features
+Train Epoch 0: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.103701
+Validation set: Avg. loss: 0.0546, Accuracy: 218255/221550 (98.51%)
+Train Epoch 1: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.032447
+Validation set: Avg. loss: 0.0364, Accuracy: 219582/221550 (99.11%)
+Train Epoch 2: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.015179
+Validation set: Avg. loss: 0.0442, Accuracy: 219801/221550 (99.21%)
+Train Epoch 3: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.008195
+Validation set: Avg. loss: 0.0505, Accuracy: 219869/221550 (99.24%)
+Train Epoch 4: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.004740
+Validation set: Avg. loss: 0.0562, Accuracy: 219926/221550 (99.27%)
+
+model 11 every feature, but two layers 
+Train Epoch 0: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.103642
+Validation set: Avg. loss: 0.0526, Accuracy: 218306/221550 (98.54%)
+Train Epoch 1: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.031609
+Validation set: Avg. loss: 0.0357, Accuracy: 219625/221550 (99.13%)
+Train Epoch 2: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.014832
+Validation set: Avg. loss: 0.0432, Accuracy: 219831/221550 (99.22%)
+Train Epoch 3: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.008117
+Validation set: Avg. loss: 0.0476, Accuracy: 219892/221550 (99.25%)
+Train Epoch 4: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.004716
+Validation set: Avg. loss: 0.0599, Accuracy: 219962/221550 (99.28%)
+
+model 12 adamW
+Train Epoch 0: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.070614
+Validation set: Avg. loss: 0.0300, Accuracy: 219866/221550 (99.24%)
+Train Epoch 1: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.014725
+Validation set: Avg. loss: 0.0247, Accuracy: 220397/221550 (99.48%)
+Train Epoch 2: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.006363
+Validation set: Avg. loss: 0.0316, Accuracy: 220394/221550 (99.48%)
+Train Epoch 3: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.003174
+Validation set: Avg. loss: 0.0338, Accuracy: 220511/221550 (99.53%)
+Train Epoch 4: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.001922
+Validation set: Avg. loss: 0.0369, Accuracy: 220480/221550 (99.52%)
+
+model 13 py -3.12 run.py train predict name=presuf001 suf_lens=3,5 pref_lens=3 batch_size=16 max_len=150 epochs=5
+Train Epoch 0: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.063530
+Validation set: Avg. loss: 0.0247, Accuracy: 220086/221550 (99.34%)
+Train Epoch 1: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.012001
+Validation set: Avg. loss: 0.0239, Accuracy: 220383/221550 (99.47%)
+Train Epoch 2: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.004973
+Validation set: Avg. loss: 0.0244, Accuracy: 220591/221550 (99.57%)
+Train Epoch 3: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.002672
+Validation set: Avg. loss: 0.0335, Accuracy: 220484/221550 (99.52%)
+Train Epoch 4: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.001557
+Validation set: Avg. loss: 0.0367, Accuracy: 220468/221550 (99.51%)
+
+model 14 py -3.12 run.py train predict name=presuf002 suf_lens=3,5 pref_lens=2,3 batch_size=16 max_len=150 epochs=5 
+Train Epoch 0: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.063100
+Validation set: Avg. loss: 0.0240, Accuracy: 220106/221550 (99.35%)
+Train Epoch 1: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.011498
+Validation set: Avg. loss: 0.0213, Accuracy: 220492/221550 (99.52%)
+Train Epoch 2: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.004612
+Validation set: Avg. loss: 0.0273, Accuracy: 220507/221550 (99.53%)
+Train Epoch 3: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.002350
+Validation set: Avg. loss: 0.0256, Accuracy: 220619/221550 (99.58%)
+Train Epoch 4: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.001616
+Validation set: Avg. loss: 0.0329, Accuracy: 220555/221550 (99.55%)
+
+model 15 PoS added
+=================================================================
+Train Epoch 0: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.060647
+Validation set: Avg. loss: 0.0222, Accuracy: 220176/221550 (99.38%)
+Train Epoch 1: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.010722
+Validation set: Avg. loss: 0.0174, Accuracy: 220628/221550 (99.58%)
+Train Epoch 2: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.004412
+Validation set: Avg. loss: 0.0209, Accuracy: 220713/221550 (99.62%)
+Train Epoch 3: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.002381
+Validation set: Avg. loss: 0.0239, Accuracy: 220754/221550 (99.64%)
+Train Epoch 4: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.001440
+Validation set: Avg. loss: 0.0272, Accuracy: 220652/221550 (99.59%)
+
+model 16 more featueres
+=================================================================
+Train Epoch 0: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.059851
+Validation set: Avg. loss: 0.0203, Accuracy: 220308/221550 (99.44%)
+Train Epoch 1: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.010537
+Validation set: Avg. loss: 0.0154, Accuracy: 220626/221550 (99.58%)
+Train Epoch 2: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.004458
+Validation set: Avg. loss: 0.0201, Accuracy: 220718/221550 (99.62%)
+Train Epoch 3: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.002416
+Validation set: Avg. loss: 0.0219, Accuracy: 220716/221550 (99.62%)
+Train Epoch 4: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.001637
+Validation set: Avg. loss: 0.0257, Accuracy: 220721/221550 (99.63%)
+
+model 17 even more features but complex
+=================================================================
+Train Epoch 0: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.058241
+Validation set: Avg. loss: 0.0213, Accuracy: 220238/221550 (99.41%)
+Train Epoch 1: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.010438
+Validation set: Avg. loss: 0.0183, Accuracy: 220617/221550 (99.58%)
+Train Epoch 2: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.004462
+Validation set: Avg. loss: 0.0179, Accuracy: 220698/221550 (99.62%)
+Train Epoch 3: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.002496
+Validation set: Avg. loss: 0.0244, Accuracy: 220709/221550 (99.62%)
+Train Epoch 4: batch:334/334 sentence:5343/5343 [100.00%] Loss:0.001782
+Validation set: Avg. loss: 0.0264, Accuracy: 220720/221550 (99.63%)
+
+model 18 tilbake til 16 men mer epochs

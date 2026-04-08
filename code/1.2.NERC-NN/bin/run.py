@@ -47,12 +47,17 @@ print("read params")
 params = {}
 for p in sys.argv[1:]:
     if "=" in p:
-        par,val = p.split("=")
-        if par in {"batch_size","max_len","suf_len","epochs"}:
+        par, val = p.split("=", 1)
+
+        if par in {"batch_size", "max_len", "epochs", "suf_len", "pref_len"}:
             params[par] = int(val)
+
+        elif par in {"suf_lens", "pref_lens"}:
+            params[par] = [int(x) for x in val.split(",") if x]
+
         else:
             params[par] = val
-        
+            
 if "name" not in params: params["name"]="mymodel_000"
 
 # if feature extraction is required, do it
