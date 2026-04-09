@@ -29,8 +29,15 @@ def extract_sentence_features(tokens, dicts) :
 
       tokenFeatures.append("form="+t)
       tokenFeatures.append("formlower="+t.lower())
-      tokenFeatures.append("suf3="+t[-3:])
-      tokenFeatures.append("suf4="+t[-4:])
+
+      if len(t) >= 2: tokenFeatures.append("suf2="+t[-2:])
+      if len(t) >= 3: tokenFeatures.append("suf3="+t[-3:])
+      if len(t) >= 4: tokenFeatures.append("suf4="+t[-4:])
+      if len(t) >= 5: tokenFeatures.append("suf5="+t[-5:])
+
+      if len(t) >= 3: tokenFeatures.append("pref3="+t[:3])
+      if len(t) >= 4: tokenFeatures.append("pref4="+t[:4])
+
       if t.isupper() : tokenFeatures.append("isUpper")
       if t.istitle() : tokenFeatures.append("isTitle")
       if t.isdigit() : tokenFeatures.append("isDigit")
@@ -47,8 +54,15 @@ def extract_sentence_features(tokens, dicts) :
          tPrev = tokens[i-1].text
          tokenFeatures.append("formPrev="+tPrev)
          tokenFeatures.append("formlowerPrev="+tPrev.lower())
-         tokenFeatures.append("suf3Prev="+tPrev[-3:])
-         tokenFeatures.append("suf4Prev="+tPrev[-4:])
+
+         if len(tPrev) >= 2: tokenFeatures.append("suf2Prev="+tPrev[-2:])
+         if len(tPrev) >= 3: tokenFeatures.append("suf3Prev="+tPrev[-3:])
+         if len(tPrev) >= 4: tokenFeatures.append("suf4Prev="+tPrev[-4:])
+         if len(tPrev) >= 5: tokenFeatures.append("suf5Prev="+tPrev[-5:])
+
+         if len(tPrev) >= 3: tokenFeatures.append("pref3Prev="+tPrev[:3])
+         if len(tPrev) >= 4: tokenFeatures.append("pref4Prev="+tPrev[:4])
+
          if tPrev.isupper() : tokenFeatures.append("isUpperPrev")
          if tPrev.istitle() : tokenFeatures.append("isTitlePrev")
          if tPrev.isdigit() : tokenFeatures.append("isDigitPrev")
@@ -67,8 +81,15 @@ def extract_sentence_features(tokens, dicts) :
          tNext = tokens[i+1].text
          tokenFeatures.append("formNext="+tNext)
          tokenFeatures.append("formlowerNext="+tNext.lower())
-         tokenFeatures.append("suf3Next="+tNext[-3:])
-         tokenFeatures.append("suf4Next="+tNext[-4:])
+
+         if len(tNext) >= 2: tokenFeatures.append("suf2Next="+tNext[-2:])
+         if len(tNext) >= 3: tokenFeatures.append("suf3Next="+tNext[-3:])
+         if len(tNext) >= 4: tokenFeatures.append("suf4Next="+tNext[-4:])
+         if len(tNext) >= 5: tokenFeatures.append("suf5Next="+tNext[-5:])
+
+         if len(tNext) >= 3: tokenFeatures.append("pref3Next="+tNext[:3])
+         if len(tNext) >= 4: tokenFeatures.append("pref4Next="+tNext[:4])
+         
          if tNext.isupper() : tokenFeatures.append("isUpperNext")
          if tNext.istitle() : tokenFeatures.append("isTitleNext")
          if tNext.isdigit() : tokenFeatures.append("isDigitNext")
