@@ -31,7 +31,8 @@ class MEM:
             # extract parameters if provided. Use default if not
             C = float(params['C']) if 'C' in params else 1.0
             solver = params['solver'] if 'solver' in params else 'lbfgs'
-            maxit = params['max_iter'] if 'max_iter' in params else 1500
+            maxit = int(params['max_iter']) if 'max_iter' in params else 1500
+           ## maxit = params['max_iter'] if 'max_iter' in params else 1500
 
             # create and train empty classifier with given parameters
             self.tagger = LogisticRegression(verbose=1,
