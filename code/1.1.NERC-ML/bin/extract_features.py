@@ -130,12 +130,6 @@ def extract_sentence_features(tokens, dicts):
         if any(ch.islower() for ch in t) and any(ch.isupper() for ch in t):
             tokenFeatures.append("mixedCase")
 
-        # Explicit drug suffix features (current token)
-        tlow = t.lower()
-        for suf in ["azole", "micin", "cillin", "sartan", "pril", "olol", "caine", "barbital"]:
-            if tlow.endswith(suf):
-                tokenFeatures.append("ends_" + suf)
-
         found, val = dicts.find(t.lower(), "external")
         if found:
             for c in val:
@@ -223,12 +217,6 @@ def extract_sentence_features(tokens, dicts):
 
             if any(ch.islower() for ch in tPrev) and any(ch.isupper() for ch in tPrev):
                 tokenFeatures.append("mixedCasePrev")
-
-            # Explicit drug suffix features (previous token)
-            tPrevLow = tPrev.lower()
-            for suf in ["azole", "micin", "cillin", "sartan", "pril", "olol", "caine", "barbital"]:
-                if tPrevLow.endswith(suf):
-                    tokenFeatures.append("ends_" + suf + "Prev")
 
             found, val = dicts.find(tPrev.lower(), "external")
             if found:
@@ -320,12 +308,6 @@ def extract_sentence_features(tokens, dicts):
             if any(ch.islower() for ch in tNext) and any(ch.isupper() for ch in tNext):
                 tokenFeatures.append("mixedCaseNext")
 
-            # Explicit drug suffix features (next token)
-            tNextLow = tNext.lower()
-            for suf in ["azole", "micin", "cillin", "sartan", "pril", "olol", "caine", "barbital"]:
-                if tNextLow.endswith(suf):
-                    tokenFeatures.append("ends_" + suf + "Next")
-
             found, val = dicts.find(tNext.lower(), "external")
             if found:
                 for c in val:
@@ -337,29 +319,6 @@ def extract_sentence_features(tokens, dicts):
                     tokenFeatures.append("externalpartNext=" + c)
         else:
             tokenFeatures.append("EoS")
-
-        # -------------------------
-        # Previous-2 / Next-2 context
-        # -------------------------
-        if i > 1:
-            tPrev2 = tokens[i - 2].text
-            tokenFeatures.append("formlowerPrev2=" + tPrev2.lower())
-            if len(tPrev2) >= 3:
-                tokenFeatures.append("suf3Prev2=" + tPrev2[-3:])
-            if len(tPrev2) >= 4:
-                tokenFeatures.append("suf4Prev2=" + tPrev2[-4:])
-        else:
-            tokenFeatures.append("BoS2")
-
-        if i < len(tokens) - 2:
-            tNext2 = tokens[i + 2].text
-            tokenFeatures.append("formlowerNext2=" + tNext2.lower())
-            if len(tNext2) >= 3:
-                tokenFeatures.append("suf3Next2=" + tNext2[-3:])
-            if len(tNext2) >= 4:
-                tokenFeatures.append("suf4Next2=" + tNext2[-4:])
-        else:
-            tokenFeatures.append("EoS2")
 
         sentenceFeatures[i] = tokenFeatures
 
