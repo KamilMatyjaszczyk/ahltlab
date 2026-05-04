@@ -8,10 +8,8 @@
                    " - drug_n -> active substances not approved for human use (e.g. clostridium toxin, heroin)", 
                    "",
                    "Produce an *exact* copy of the input texts, marking in XML the mentioned drugs, using their respective type as XML tag.",
-                   "Do not alter the text in any other way."
-                  ],
-
-    "usrprompt" : ["Given the following text, mark in XML the drugs mentioned in it. Each drug must be marked with one of the XML tags: <drug>, <group>, <brand>, <drug_n>",
+                   "Do not alter the text in any other way.",
+                   "",
                    "It is important that you take into account the following constraints:",
                    "  - Only drug types in the above list are valid. DO NOT introduce new ones, e.g: <drug_toxin> or <drug_anphetamine> are WRONG tags",
                    "  - Used XML tags CAN NOT be embeeded. Any tag must be closed before opening a new one.",
@@ -19,7 +17,9 @@
  		           "  - Do NOT alter the names or capitalization of marked drugs.",
  		           "  - If unsure about whether a drug is approved for human use, assume it is.",
                    "  - Produce just the marked text, do not add further explanations."
-                  ]
+                  ],
+
+    "usrprompt" : ["Mark the drug mentions in the following text with the appropriate XML tags."]
 }
 
 

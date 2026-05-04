@@ -73,10 +73,10 @@ print(f"Processed {len(annotated)} examples in {time.time()-t0:.1f} seconds. ({(
 os.makedirs(paths.RESULTS, exist_ok=True)
 quant = "-quant" if quantized else ""
 outfname = os.path.join(paths.RESULTS,
-                        f"FS-{model}-{num_few_shot}-{testdata}{quant}")
-with open(outfname+".json", "w") as of:  
+                        f"FS-{model.replace(':','-')}-{num_few_shot}-{testdata}{quant}")
+with open(outfname+".json", "w", encoding='utf-8') as of:  
    json.dump(annotated, of, indent=1, ensure_ascii=False)
-with open(outfname+".out", "w") as of:  
+with open(outfname+".out", "w", encoding='utf-8') as of:  
    for e in annotated:
       if e["evaluator"]: 
           print("\n".join(e["evaluator"]), file=of)

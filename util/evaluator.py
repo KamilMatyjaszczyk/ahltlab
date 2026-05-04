@@ -76,7 +76,7 @@ def load_gold_DDI(goldfile) :
 
 def load_predicted(task, outfile) :
     predicted = { "CLASS" : set([]), "NOCLASS" : set([]) }
-    outf = open(outfile,"r")
+    outf = open(outfile,"r", encoding='utf-8')
     for line in outf.readlines() :
         line = line.strip()
         if line in predicted["CLASS"] :
