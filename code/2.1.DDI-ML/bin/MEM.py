@@ -39,7 +39,8 @@ class MEM:
             self.tagger = LogisticRegression(verbose=1,
                                              C=C,
                                              solver=solver,
-                                             max_iter=maxit)
+                                             max_iter=maxit,
+                                             random_state=42)
 
                 
     ## --------------------------------------------------

@@ -41,7 +41,8 @@ class SVM:
                               C=C,
                               kernel=kernel,
                               degree=degree,
-                              gamma=gamma
+                              gamma=gamma,
+                              random_state=42
                               )
 
 
