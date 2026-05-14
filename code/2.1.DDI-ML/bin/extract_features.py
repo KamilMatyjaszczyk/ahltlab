@@ -6,8 +6,110 @@ import spacy
 
 from patterns import *
 
+# Extra features:
+FEATURE_SET = os.environ.get("FEATURE_SET", "baseline")
+
+USE_CONTEXT_FEATURES = FEATURE_SET in {"context", "all"}
+USE_CLUE_VERB_FEATURES = FEATURE_SET in {"clue", "all"}
+USE_EXTRA_SYNTAX_FEATURES = FEATURE_SET in {"syntax", "all"}
 ## ------------------- 
 ## -- Convert a pair of drugs and their context in a feature vector
+
+def add_context_features(feats, tree, entities, e1, e2):
+   ent1 = entities[e1]
+   ent2 = entities[e2]
+
+   # Entity type combination
+   feats.add("ctx_typePair=" + ent1["type"] + "_" + ent2["type"])
+
+   # Entity order
+   if ent1["start"] < ent2["start"]:
+      feats.add("ctx_order=E1_before_E2")
+      left_ent, right_ent = ent1, ent2
+   else:
+      feats.add("ctx_order=E2_before_E1")
+      left_ent, right_ent = ent2, ent1
+
+   # Character distance bucket
+   char_dist = right_ent["start"] - left_ent["end"]
+
+   if char_dist <= 10:
+      feats.add("ctx_charDist=very_short")
+   elif char_dist <= 30:
+      feats.add("ctx_charDist=short")
+   elif char_dist <= 80:
+      feats.add("ctx_charDist=medium")
+   else:
+      feats.add("ctx_charDist=long")
+
+   # Tokens between entities
+   between_tokens = []
+   for tk in tree:
+      tk_start = tk.idx
+      tk_end = tk.idx + len(tk.text)
+
+      if left_ent["end"] < tk_start and tk_end < right_ent["start"]:
+         between_tokens.append(tk)
+
+   # Token distance bucket
+   n_between = len(between_tokens)
+   if n_between == 0:
+      feats.add("ctx_tokensBetween=0")
+   elif n_between <= 2:
+      feats.add("ctx_tokensBetween=1-2")
+   elif n_between <= 5:
+      feats.add("ctx_tokensBetween=3-5")
+   else:
+      feats.add("ctx_tokensBetween=6+")
+
+   # General POS information between entities
+   if between_tokens:
+      pos_seq = "_".join([tk.pos_ for tk in between_tokens[:5]])
+      feats.add("ctx_betweenPOSSeq=" + pos_seq)
+
+      has_verb = any(tk.pos_ == "VERB" for tk in between_tokens)
+      has_noun = any(tk.pos_ == "NOUN" for tk in between_tokens)
+      has_adj = any(tk.pos_ == "ADJ" for tk in between_tokens)
+      has_adv = any(tk.pos_ == "ADV" for tk in between_tokens)
+
+      if has_verb:
+         feats.add("ctx_hasVerbBetween")
+      if has_noun:
+         feats.add("ctx_hasNounBetween")
+      if has_adj:
+         feats.add("ctx_hasAdjBetween")
+      if has_adv:
+         feats.add("ctx_hasAdvBetween")
+   else:
+      feats.add("ctx_noTokensBetween")
+
+   # Third entity information
+   third_between = False
+   third_before = False
+   third_after = False
+
+   for eid, ent in entities.items():
+      if eid in {e1, e2}:
+         continue
+
+      if left_ent["end"] < ent["start"] and ent["end"] < right_ent["start"]:
+         third_between = True
+         feats.add("ctx_thirdEntityTypeBetween=" + ent["type"])
+      elif ent["end"] < left_ent["start"]:
+         third_before = True
+      elif right_ent["end"] < ent["start"]:
+         third_after = True
+
+   if third_between:
+      feats.add("ctx_thirdEntityBetween")
+   else:
+      feats.add("ctx_noThirdEntityBetween")
+
+   if third_before:
+      feats.add("ctx_thirdEntityBefore")
+
+   if third_after:
+      feats.add("ctx_thirdEntityAfter")
 
 def extract_pair_features(tree, entities, e1, e2) :
    feats = set()
@@ -17,6 +119,9 @@ def extract_pair_features(tree, entities, e1, e2) :
    feats.add("typeE2="+ entities[e2]['type'])
    if entities[e1]['text'].lower() == entities[e2]['text'].lower() : 
       feats.add("samedrug")
+
+   if USE_CONTEXT_FEATURES:
+      add_context_features(feats, tree, entities, e1, e2)
 
    # features about paths in the tree.
    # get head token for each gold entity
