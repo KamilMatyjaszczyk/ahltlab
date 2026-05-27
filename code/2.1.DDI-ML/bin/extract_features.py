@@ -9,9 +9,30 @@ from patterns import *
 # Extra features:
 FEATURE_SET = os.environ.get("FEATURE_SET", "baseline")
 
-USE_CONTEXT_FEATURES = FEATURE_SET in {"context", "all"}
+USE_CONTEXT_FEATURES = FEATURE_SET in {"context", "contextsyntax", "contextsyntaxentity", "all"}
 USE_CLUE_VERB_FEATURES = FEATURE_SET in {"clue", "all"}
-USE_EXTRA_SYNTAX_FEATURES = FEATURE_SET in {"syntax", "all"}
+USE_EXTRA_SYNTAX_FEATURES = FEATURE_SET in {"syntax", "contextsyntax", "contextsyntaxentity", "all"}
+USE_ENTITY_PATH_FEATURES = FEATURE_SET in {"entity_path", "contextsyntaxentity", "all"}
+
+CLUE_VERBS = {
+   # effect-related
+   "increase", "decrease", "reduce", "enhance", "potentiate",
+   "augment", "produce", "cause", "prolong",
+
+   # mechanism-related
+   "inhibit", "induce", "interfere", "antagonize",
+   "alter", "affect", "impair", "delay", "displace",
+
+   # advise-related
+   "avoid", "recommend", "contraindicate", "consider",
+   "require", "monitor", "warrant", "exceed",
+   "titrate", "initiate", "prescribe", "discontinue",
+
+   # interaction/administration-related
+   "interact", "administer", "give", "coadministere"
+}
+
+
 ## ------------------- 
 ## -- Convert a pair of drugs and their context in a feature vector
 
@@ -111,6 +132,233 @@ def add_context_features(feats, tree, entities, e1, e2):
    if third_after:
       feats.add("ctx_thirdEntityAfter")
 
+
+def add_clue_verb_features(feats, tree, entities, e1, e2):
+   ent1 = entities[e1]
+   ent2 = entities[e2]
+
+   if ent1["start"] < ent2["start"]:
+      left_ent, right_ent = ent1, ent2
+   else:
+      left_ent, right_ent = ent2, ent1
+
+   found_clue = False
+
+   for tk in tree:
+      lemma = tk.lemma_.lower()
+
+      if lemma not in CLUE_VERBS:
+         continue
+
+      found_clue = True
+
+      feats.add("clue_hasVerb")
+      feats.add("clue_verb=" + lemma)
+
+      tk_start = tk.idx
+      tk_end = tk.idx + len(tk.text)
+
+      if tk_end < left_ent["start"]:
+         feats.add("clue_position=before")
+         feats.add("clue_beforeVerb=" + lemma)
+
+      elif left_ent["end"] < tk_start and tk_end <= right_ent["start"]:
+         feats.add("clue_position=between")
+         feats.add("clue_betweenVerb=" + lemma)
+
+      elif right_ent["end"] < tk_start:
+         feats.add("clue_position=after")
+         feats.add("clue_afterVerb=" + lemma)
+
+   if not found_clue:
+      feats.add("clue_noVerb")
+
+def add_extra_syntax_features(feats, tree, entities, e1, e2):
+   ent1 = entities[e1]
+   ent2 = entities[e2]
+
+   # Find the syntactic head token of each entity
+   tkE1 = get_fragment_head(tree, ent1["start"], ent1["end"])
+   tkE2 = get_fragment_head(tree, ent2["start"], ent2["end"])
+
+   if tkE1 is None or tkE2 is None:
+      return
+
+   # Find the lowest common subsumer of the entity heads
+   lcs = get_LCS(tree, tkE1, tkE2)
+
+   if lcs is None:
+      return
+
+   # -------------------------------------------------
+   # 1. Generalised dependency path length
+   # -------------------------------------------------
+   def distance_to_ancestor(node, ancestor):
+      """Return the number of dependency edges from node to ancestor."""
+      if node == ancestor:
+         return 0
+
+      distance = 0
+      current = node
+
+      while current != ancestor and current.head != current:
+         current = current.head
+         distance += 1
+
+      if current == ancestor:
+         return distance
+
+      return None
+
+   dist1 = distance_to_ancestor(tkE1, lcs)
+   dist2 = distance_to_ancestor(tkE2, lcs)
+
+   if dist1 is not None and dist2 is not None:
+      path_length = dist1 + dist2
+
+      if path_length <= 2:
+         feats.add("syn_pathLength=short")
+      elif path_length <= 5:
+         feats.add("syn_pathLength=medium")
+      else:
+         feats.add("syn_pathLength=long")
+
+   # Get dependency-path nodes for the coordination features below
+   path1 = get_up_path(tkE1, lcs)
+   path2 = get_down_path(lcs, tkE2)
+
+   if path1 is not None and path2 is not None:
+
+      # -------------------------------------------------
+      # 2. Coordination information on the dependency path
+      # -------------------------------------------------
+      path_nodes = path1 + path2
+      conj_count = sum(1 for node in path_nodes if node.dep_ == "conj")
+
+      if conj_count >= 1:
+         feats.add("syn_coordinationPath")
+
+      if conj_count >= 2:
+         feats.add("syn_manyConjunctions")
+
+   # -------------------------------------------------
+   # 3. Generalised verb-role pattern
+   # -------------------------------------------------
+   # Find the first governing verb at or above the LCS
+   governing_verb = lcs
+
+   while governing_verb.pos_ != "VERB" and governing_verb.head != governing_verb:
+      governing_verb = governing_verb.head
+
+   if governing_verb.pos_ == "VERB":
+      verb_path1 = get_up_path(tkE1, governing_verb)
+      verb_path2 = get_up_path(tkE2, governing_verb)
+
+      if verb_path1 is not None and verb_path2 is not None:
+         if len(verb_path1) > 0 and len(verb_path2) > 0:
+            role1 = verb_path1[-1].dep_
+            role2 = verb_path2[-1].dep_
+
+            feats.add("syn_generalVerbRoles=" + role1 + "_" + role2)
+
+def add_entity_path_features(feats, tree, entities, e1, e2):
+   ent1 = entities[e1]
+   ent2 = entities[e2]
+
+   # Find the syntactic head token of each target entity
+   tkE1 = get_fragment_head(tree, ent1["start"], ent1["end"])
+   tkE2 = get_fragment_head(tree, ent2["start"], ent2["end"])
+
+   if tkE1 is None or tkE2 is None:
+      return
+
+   lcs = get_LCS(tree, tkE1, tkE2)
+
+   if lcs is None:
+      return
+
+   path1 = get_up_path(tkE1, lcs)
+   path2 = get_down_path(lcs, tkE2)
+
+   if path1 is None or path2 is None:
+      return
+
+   # Full path, including the LCS once
+   full_path = list(path1)
+
+   if lcs not in full_path:
+      full_path.append(lcs)
+
+   for node in path2:
+      if node not in full_path:
+         full_path.append(node)
+
+   # -------------------------------------------------
+   # 1. Identify non-target entities occurring on the path
+   # -------------------------------------------------
+   third_entities_on_path = set()
+
+   for tk in full_path:
+      for eid, ent in entities.items():
+         if eid in {e1, e2}:
+            continue
+
+         tk_start = tk.idx
+         tk_end = tk.idx + len(tk.text)
+
+         if ent["start"] <= tk_start and tk_end <= ent["end"] + 1:
+            third_entities_on_path.add(eid)
+
+   if third_entities_on_path:
+      feats.add("epath_thirdEntityOnPath")
+
+      for eid in third_entities_on_path:
+         feats.add("epath_thirdEntityTypeOnPath=" + entities[eid]["type"])
+
+      if len(third_entities_on_path) >= 2:
+         feats.add("epath_multipleThirdEntitiesOnPath")
+   else:
+      feats.add("epath_noThirdEntityOnPath")
+
+   # -------------------------------------------------
+   # 2. Entity-masked dependency path
+   # -------------------------------------------------
+   def node_representation(tk):
+      # Replace any entity token by ENTITY, keeping its dependency role
+      for eid, ent in entities.items():
+         tk_start = tk.idx
+         tk_end = tk.idx + len(tk.text)
+
+         if ent["start"] <= tk_start and tk_end <= ent["end"] + 1:
+            return "ENTITY_" + tk.dep_
+
+      # Preserve governing verbs, since they may describe the interaction
+      if tk.pos_ == "VERB":
+         return tk.lemma_.lower() + "_" + tk.dep_
+
+      # For other nodes, preserve only the dependency relation
+      return tk.dep_
+
+   path_length = len(path1) + len(path2)
+
+   # Only store detailed masked paths for short/medium paths.
+   # Long paths are often highly specific list structures.
+   if path_length <= 5:
+      masked_path1 = "<".join(node_representation(tk) for tk in path1)
+      masked_lcs = node_representation(lcs)
+      masked_path2 = ">".join(node_representation(tk) for tk in path2)
+
+      feats.add(
+         "epath_masked="
+         + masked_path1
+         + "<"
+         + masked_lcs
+         + ">"
+         + masked_path2
+      )
+   else:
+      feats.add("epath_maskedPathTooLong")
+
 def extract_pair_features(tree, entities, e1, e2) :
    feats = set()
 
@@ -123,6 +371,15 @@ def extract_pair_features(tree, entities, e1, e2) :
    if USE_CONTEXT_FEATURES:
       add_context_features(feats, tree, entities, e1, e2)
 
+   if USE_CLUE_VERB_FEATURES:
+      add_clue_verb_features(feats, tree, entities, e1, e2)
+   
+   if USE_EXTRA_SYNTAX_FEATURES:
+      add_extra_syntax_features(feats, tree, entities, e1, e2)
+
+   if USE_ENTITY_PATH_FEATURES:
+      add_entity_path_features(feats, tree, entities, e1, e2)
+      
    # features about paths in the tree.
    # get head token for each gold entity
    tkE1 = get_fragment_head(tree,entities[e1]['start'],entities[e1]['end'])
