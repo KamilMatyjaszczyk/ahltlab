@@ -10,7 +10,7 @@
 ## Usage: 
 ##    sbatch FT-inference.sh llama32B3 prompt01 devel FT-llama32B3.weights [-quant]
 
-source /scratch/nas/1/PDI/mml0/MML.venv/bin/activate
+source /scratch/nas/1/PDI/mgl0/AHLT.venv/bin/activate
 
 MODEL=$1
 PROMPTS=$2

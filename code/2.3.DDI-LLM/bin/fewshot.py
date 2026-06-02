@@ -48,7 +48,7 @@ t0 = time.time()
 if ollama:
    engine = Inference(model, ollama=True)
 else :
-   MODEL_PATH = f"/scratch/nas/1/PDI/mml0/models/{model}"
+   MODEL_PATH = f"/scratch/nas/1/PDI/mgl0/models/{model}"
    engine = Inference(MODEL_PATH, quantized=quantized)
 print(f"Model loading took {time.time()-t0:.1f} seconds", file=sys.stderr)
 
