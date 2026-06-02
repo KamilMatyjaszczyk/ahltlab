@@ -14,6 +14,8 @@ from codemaps import *
 
 from network import ddiCNN, criterion
 
+import paths
+
 random.seed(2345)
 torch.manual_seed(2345)
 torch.cuda.manual_seed(2345)
@@ -23,8 +25,7 @@ torch.backends.cudnn.deterministic=True
 used_device = "cuda:0" if torch.cuda.is_available() else "cpu"
 
 #----------------------------------------------
-def train(network, epoch, train_loader):
-   optimizer = optim.Adam(network.parameters())
+def train(network, epoch, train_loader, optimizer):
    network.to(torch.device(used_device))
 
    network.train()
@@ -85,6 +86,7 @@ def encode_dataset(ds, codes, params) :
                      batch_size=params['batch_size'])
 
 
+
 #----------------------------------------------
 def do_train(trainfile, valfile, params, modelname) :
 
@@ -93,6 +95,11 @@ def do_train(trainfile, valfile, params, modelname) :
     if 'suf_len' not in params : params['suf_len'] = 5
     if 'batch_size' not in params : params['batch_size'] = 16
     if 'epochs' not in params : params['epochs'] = 10
+
+    params['max_len'] = int(params['max_len'])
+    params['suf_len'] = int(params['suf_len'])
+    params['batch_size'] = int(params['batch_size'])
+    params['epochs'] = int(params['epochs'])
 
     # load pickle datasets (or parse if needed)
     traindata = Dataset(trainfile)
@@ -109,6 +116,9 @@ def do_train(trainfile, valfile, params, modelname) :
 
     summary(network)
 
+    optimizer = optim.RMSprop(network.parameters(), lr=0.001)
+
+
     # save indexs
     os.makedirs(modelname,exist_ok=True)
     torch.save(network, os.path.join(modelname,"network.nn"))
@@ -116,7 +126,7 @@ def do_train(trainfile, valfile, params, modelname) :
     # train each epoch, keep the best model on validation
     best = 0       
     for epoch in range(params["epochs"]):
-       train(network, epoch, train_loader)
+       train(network, epoch, train_loader, optimizer)
        acc = validation(network, val_loader)
        if acc>best :
           best = acc
