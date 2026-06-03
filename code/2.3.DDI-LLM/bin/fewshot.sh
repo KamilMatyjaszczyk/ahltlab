@@ -19,10 +19,14 @@ SHOTS=$3
 TRAIN=$4
 TEST=$5
 QUANT=$6
+STRATEGY=$7
+if [ -z "$STRATEGY" ]; then
+  STRATEGY="balanced"
+fi
 
-python3 fewshot.py $MODEL $PROMPTS $SHOTS $TRAIN $TEST $QUANT
+python3 fewshot.py $MODEL $PROMPTS $SHOTS $TRAIN $TEST $QUANT $STRATEGY
 if (test $? != 0); then exit; fi
 
-python3 ../../../util/evaluator.py DDI ../../../data/$TEST.xml ../results/FS-$MODEL-$PROMPTBASE-$SHOTS-${TEST}${QUANT}.out ../results/FS-$MODEL-$PROMPTBASE-$SHOTS-${TEST}${QUANT}.stats
+python3 ../../../util/evaluator.py DDI ../../../data/$TEST.xml ../results/FS-$MODEL-$PROMPTBASE-$STRATEGY-$SHOTS-${TEST}${QUANT}.out ../results/FS-$MODEL-$PROMPTBASE-$STRATEGY-$SHOTS-${TEST}${QUANT}.stats
 
 deactivate

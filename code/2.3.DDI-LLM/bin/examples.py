@@ -123,6 +123,93 @@ class Examples() :
             return random.sample(self.data, numFS)
             
             
+    # ------------ select examples with custom class distribution for DDI -----------------
+    def select_examples_distribution(self, numFS=-1, distribution=None):
+        random.seed(12345)
+
+        if self.task != "DDI":
+            print("'select_examples_distribution' only intended for DDI. Falling back to random selection.", file=sys.stderr)
+            return self.select_examples(numFS, balanced=False)
+
+        if numFS == -1:
+            return self.data
+
+        if numFS == 0:
+            return []
+
+        if distribution is None:
+            distribution = {
+                "null": 1,
+                "advise": 1,
+                "effect": 1,
+                "int": 1,
+                "mechanism": 1
+            }
+
+        total_weight = sum(distribution.values())
+
+        # Scale class weights to requested number of few-shot examples
+        counts = {}
+        for label, weight in distribution.items():
+            counts[label] = max(0, round(numFS * weight / total_weight))
+
+        # Make sure total number is exactly numFS
+        while sum(counts.values()) < numFS:
+            counts["null"] = counts.get("null", 0) + 1
+
+        while sum(counts.values()) > numFS:
+            # reduce the largest non-null class first
+            reducible = [label for label in counts if counts[label] > 0 and label != "null"]
+            if not reducible:
+                reducible = [label for label in counts if counts[label] > 0]
+            label = max(reducible, key=lambda x: counts[x])
+            counts[label] -= 1
+
+        examples = []
+
+        for label, n in counts.items():
+            if n <= 0:
+                continue
+
+            filtered = [x for x in self.data if x["gold"] == label]
+
+            if len(filtered) < n:
+                selected = filtered
+            else:
+                selected = random.sample(filtered, n)
+
+            examples.extend(selected)
+            print(f"Selected {len(selected)} examples for class {label}", file=sys.stderr)
+
+        random.shuffle(examples)
+        print(f"Selected {len(examples)} examples with distribution {counts}", file=sys.stderr)
+        return examples
+
+
+    def select_examples_null_heavy(self, numFS=-1):
+        return self.select_examples_distribution(
+            numFS,
+            distribution={
+                "null": 6,
+                "advise": 2,
+                "effect": 3,
+                "int": 1,
+                "mechanism": 3
+            }
+        )
+
+
+    def select_examples_no_int_heavy(self, numFS=-1):
+        return self.select_examples_distribution(
+            numFS,
+            distribution={
+                "null": 5,
+                "advise": 3,
+                "effect": 3,
+                "int": 0,
+                "mechanism": 3
+            }
+        )
     
     # ------------ convert xml marks to format expected by the evaluator ----------------
     def NER_eval_format(self, ex, text):

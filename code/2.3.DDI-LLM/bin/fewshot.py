@@ -10,8 +10,12 @@ from examples import Examples
 
 # ------------ check command line and get arguments -----------------
 def get_arguments():
-    if (not 6<=len(sys.argv)<=7 or sys.argv[6] not in ["-quant", "-ollama"]):
-        print(f"Usage:  {sys.argv[0]} model prompts num_few_shot trainfile testfile [(-quant|-ollama)]", file=sys.stderr)
+    if not 6 <= len(sys.argv) <= 8:
+        print(f"Usage:  {sys.argv[0]} model prompts num_few_shot trainfile testfile [(-quant|-ollama)] [strategy]", file=sys.stderr)
+        sys.exit(1)
+
+    if len(sys.argv) >= 7 and sys.argv[6] not in ["-quant", "-ollama"]:
+        print(f"Usage:  {sys.argv[0]} model prompts num_few_shot trainfile testfile [(-quant|-ollama)] [strategy]", file=sys.stderr)
         sys.exit(1)
 
     model = sys.argv[1]
@@ -19,22 +23,37 @@ def get_arguments():
     num_few_shot = int(sys.argv[3])
     traindata = sys.argv[4]
     testdata = sys.argv[5]
-    quantized = (sys.argv[6]=="-quant")
-    ollama = (sys.argv[6]=="-ollama")
 
-    return model, promptfile, num_few_shot, traindata, testdata, quantized, ollama
+    quantized = (len(sys.argv) >= 7 and sys.argv[6] == "-quant")
+    ollama = (len(sys.argv) >= 7 and sys.argv[6] == "-ollama")
+
+    strategy = "balanced"
+    if len(sys.argv) == 8:
+        strategy = sys.argv[7]
+
+    return model, promptfile, num_few_shot, traindata, testdata, quantized, ollama, strategy
 
 
 ############## main ###################
 
 # get command line arguments
-model, promptfile, num_few_shot, traindata, testdata, quantized, ollama = get_arguments()
+model, promptfile, num_few_shot, traindata, testdata, quantized, ollama, strategy = get_arguments()
 
 print(f"========= FEW SHOT === PROMPTS={promptfile}  SHOTS={num_few_shot}  DATA={testdata} quantized={quantized}", file=sys.stderr)
 
 # load training data (FS examples)
 trainfile = os.path.join(paths.DATA,traindata+".xml")
-fs_examples = Examples(trainfile,"DDI").select_examples(num_few_shot, balanced=True)
+train_examples = Examples(trainfile, "DDI")
+
+if strategy == "balanced":
+    fs_examples = train_examples.select_examples(num_few_shot, balanced=True)
+elif strategy == "null_heavy":
+    fs_examples = train_examples.select_examples_null_heavy(num_few_shot)
+elif strategy == "no_int_heavy":
+    fs_examples = train_examples.select_examples_no_int_heavy(num_few_shot)
+else:
+    print(f"Unknown strategy '{strategy}'. Valid strategies: balanced, null_heavy, no_int_heavy", file=sys.stderr)
+    sys.exit(1)
 
 # load prompts, create few-shot prompt
 prompts = Prompts(promptfile, fs_examples)
@@ -74,7 +93,7 @@ os.makedirs(paths.RESULTS, exist_ok=True)
 quant = "-quant" if quantized else ""
 prompt_name = os.path.splitext(os.path.basename(promptfile))[0]
 outfname = os.path.join(paths.RESULTS,
-                        f"FS-{model}-{prompt_name}-{num_few_shot}-{testdata}{quant}")
+                        f"FS-{model}-{prompt_name}-{strategy}-{num_few_shot}-{testdata}{quant}")
 with open(outfname+".json", "w") as of:  
    json.dump(annotated, of, indent=1, ensure_ascii=False)
 with open(outfname+".out", "w") as of:  
