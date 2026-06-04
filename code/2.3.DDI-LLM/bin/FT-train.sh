@@ -20,6 +20,5 @@ STRATEGY=$5
 QUANT=$6
 
 python3 finetune-train.py $MODEL $PROMPTS $TRAIN $TEST $STRATEGY $QUANT
-if (test $? != 0); then exit; fi
 
 deactivate

@@ -20,7 +20,6 @@ QUANT=$5
 WEIGHTNAME=$(basename "$WEIGHTS" .weights)
 
 python3 finetune-inference.py $MODEL $PROMPTS $TEST $WEIGHTS $QUANT
-if (test $? != 0); then exit; fi
 
 python3 ../../../util/evaluator.py DDI ../../../data/$TEST.xml ../results/${WEIGHTNAME}-${TEST}.out ../results/${WEIGHTNAME}-${TEST}.stats
 
