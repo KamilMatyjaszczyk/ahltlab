@@ -16,9 +16,10 @@ MODEL=$1
 PROMPTS=$2
 TRAIN=$3
 TEST=$4
-QUANT=$5
+STRATEGY=$5
+QUANT=$6
 
-python3 finetune-train.py $MODEL $PROMPTS $TRAIN $TEST $QUANT
+python3 finetune-train.py $MODEL $PROMPTS $TRAIN $TEST $STRATEGY $QUANT
 if (test $? != 0); then exit; fi
 
 deactivate
