@@ -1,8 +1,8 @@
 #! /bin/bash
 #SBATCH -p cuda
 #SBATCH -A cudabig
-#SBATCH --qos=cudabig3080
-#SBATCH --gres=gpu:rtx3080:1
+#SBATCH --qos=cudabig4090
+#SBATCH --gres=gpu:rtx4090:1
 #SBATCH -c 2
 #SBATCH --mem=48Gb 
 
