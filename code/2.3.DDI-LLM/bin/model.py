@@ -129,8 +129,8 @@ class FineTuning() :
 
         # Add LoRa fine-tunable layers
         lora_config = LoraConfig(
-            r=8,
-            lora_alpha=16,
+            r=16,
+            lora_alpha=32,
             target_modules=["q_proj", "v_proj", "k_proj", "o_proj"],
             lora_dropout=0.05,
             bias="none",
@@ -197,7 +197,7 @@ class FineTuning() :
             eval_accumulation_steps=4,
             fp16=False,
             bf16=True,
-            learning_rate=5e-5,
+            learning_rate=2e-5,
             num_train_epochs=5,
             eval_strategy="epoch",
             save_total_limit = 2,
