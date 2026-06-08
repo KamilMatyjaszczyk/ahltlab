@@ -69,7 +69,7 @@ print(f"Dataset loading took {time.time()-t0:.1f} seconds", file=sys.stderr)
 t0 = time.time()
 os.makedirs(paths.MODELS, exist_ok=True)
 quant="-quant" if quantized else ""
-outputdir = os.path.join(paths.MODELS, f"FT-{model}{quant}-{strategy}-ep10-lr1e5.weights")
+outputdir = os.path.join(paths.MODELS, f"FT-{model}{quant}-{strategy}-ep5-lr5e5.weights")
 engine.train(train_dataset,
              val_dataset, 
              outputdir) 
