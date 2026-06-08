@@ -198,7 +198,7 @@ class FineTuning() :
             fp16=False,
             bf16=True,
             learning_rate=2e-5,
-            num_train_epochs=10,
+            num_train_epochs=5,
             eval_strategy="epoch",
             save_total_limit = 2,
             load_best_model_at_end=True,
