@@ -67,7 +67,7 @@ class Inference():
         if self.ollama:
             response = self.client.chat(model = self.model,
                                         messages = messages,
-                                        options = {"num_predict": 128}
+                                        options = {"num_predict": 64}
                                         )
             gen_text = response.message.content
             return gen_text
@@ -82,7 +82,7 @@ class Inference():
             # generate likely continuation (assistant answer)
             with torch.no_grad():
                 gen_tokens = self.model.generate(input_ids,
-                                                 max_new_tokens=128,
+                                                 max_new_tokens=64,
                                                  pad_token_id=self.tokenizer.eos_token_id
                                                 )
             promptlen = len(input_ids[0])
